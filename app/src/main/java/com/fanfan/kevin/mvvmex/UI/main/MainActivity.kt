@@ -1,5 +1,6 @@
 package com.fanfan.kevin.mvvmex.UI.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.snackbar.Snackbar
@@ -8,8 +9,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
 import com.fanfan.kevin.mvvmex.R
+import com.fanfan.kevin.mvvmex.UI.addCar.AddCar
 import com.fanfan.kevin.mvvmex.ViewModelFactory
-import com.fanfan.kevin.mvvmex.data.local.car.car.carDao
+import com.fanfan.kevin.mvvmex.data.local.car.car.carBuilder
 import com.fanfan.kevin.mvvmex.di.Injection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -38,15 +40,25 @@ class MainActivity : AppCompatActivity() {
         viewModelFactory = Injection.provideMainViewModelFactory(this)
 
         fab.setOnClickListener { view ->
-            viewModel.updateOrAddCar(carDao {year = "2012";carName= "civic" })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({Log.e(TAG,"update success")},
-                    { error-> Log.e(TAG,"unable to update car")})
+//            viewModel.updateOrAddCar(carBuilder {year = "2012";carName= "civic" })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe ({Log.e(TAG,"update success")},
+//                    { error-> Log.e(TAG,"unable to update car")})
+
+
+            viewModel.allCars().subscribe({Log.e(TAG,"all cars size ${it.size}")})
+            startAddCarAct()
+
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
 
         }
+    }
+
+    fun startAddCarAct() {
+        val intent = Intent(this, AddCar::class.java)
+        startActivity(intent)
     }
 
     override fun onStart() {

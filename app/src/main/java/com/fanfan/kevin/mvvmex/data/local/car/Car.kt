@@ -18,4 +18,4 @@ class CarBuilder {
         Car(id, carName, year)
 }
 
-fun carDao(block: CarBuilder.() -> Unit): Car = CarBuilder().apply(block).build()
+fun carBuilder(block: CarBuilder.() -> Unit): Car = CarBuilder().apply(block).build()
