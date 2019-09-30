@@ -102,9 +102,11 @@ dependencies {
 //    kapt "androidx.room:room-compiler:$roomVersion" //kapt()
 //
 //
-//    // Dagger
-//    implementation 'com.google.dagger:dagger:2.19'
-//    kapt 'com.google.dagger:dagger-compiler:2.19'
+    // Dagger
+    implementation 'com.google.dagger:dagger:2.19'
+    kapt 'com.google.dagger:dagger-compiler:2.19'
+
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 //
 //
 //

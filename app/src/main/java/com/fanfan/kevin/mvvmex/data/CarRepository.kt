@@ -4,8 +4,9 @@ import com.fanfan.kevin.mvvmex.data.local.car.CarsLocalDataSource
 import com.fanfan.kevin.mvvmex.data.local.car.car.Car
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import javax.inject.Inject
 
-class CarRepository(
+class CarRepository @Inject constructor(
     private val carRemoteDataSource: CarDataSource,
     private val carsLocalDataSource: CarDataSource
 ) : CarsRepository {

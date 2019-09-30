@@ -5,8 +5,9 @@ import com.fanfan.kevin.mvvmex.data.local.car.car.Car
 import com.fanfan.kevin.mvvmex.data.local.car.car.CarDao
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import javax.inject.Inject
 
-class CarsLocalDataSource(private val carDao:CarDao) : CarDataSource {
+class CarsLocalDataSource @Inject constructor(private val carDao:CarDao) : CarDataSource {
     override fun getCars(): Flowable<List<Car>> {
        return carDao.getCars()
     }

@@ -8,22 +8,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
+import com.fanfan.kevin.mvvmex.BaseApplication
 import com.fanfan.kevin.mvvmex.R
 import com.fanfan.kevin.mvvmex.UI.addCar.AddCar
 import com.fanfan.kevin.mvvmex.ViewModelFactory
 import com.fanfan.kevin.mvvmex.data.local.car.car.carBuilder
 import com.fanfan.kevin.mvvmex.di.Injection
+import com.fanfan.kevin.mvvmex.di.ViewModelFactoryDagger
+import com.fanfan.kevin.mvvmex.di.injector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModelFactory: ViewModelFactory
-
+//    private lateinit var viewModelFactory: ViewModelFactory
+    @Inject lateinit var viewModelFactory: ViewModelFactoryDagger<MainViewModel>
     //    private val viewModel :MainViewModel by viewModels()
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
@@ -37,16 +41,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        viewModelFactory = Injection.provideMainViewModelFactory(this)
+//        viewModelFactory = Injection.provideMainViewModelFactory(this)
+        injector.inject(this)
 
         fab.setOnClickListener { view ->
-//            viewModel.updateOrAddCar(carBuilder {year = "2012";carName= "civic" })
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe ({Log.e(TAG,"update success")},
-//                    { error-> Log.e(TAG,"unable to update car")})
-
-
             viewModel.allCars().subscribe({Log.e(TAG,"all cars size ${it.size}")})
             startAddCarAct()
 
