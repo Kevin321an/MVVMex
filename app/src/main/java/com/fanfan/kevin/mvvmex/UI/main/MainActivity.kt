@@ -8,12 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
-import com.fanfan.kevin.mvvmex.BaseApplication
+import androidx.recyclerview.widget.RecyclerView
 import com.fanfan.kevin.mvvmex.R
 import com.fanfan.kevin.mvvmex.UI.addCar.AddCar
-import com.fanfan.kevin.mvvmex.ViewModelFactory
-import com.fanfan.kevin.mvvmex.data.local.car.car.carBuilder
-import com.fanfan.kevin.mvvmex.di.Injection
 import com.fanfan.kevin.mvvmex.di.ViewModelFactoryDagger
 import com.fanfan.kevin.mvvmex.di.injector
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,7 +19,9 @@ import io.reactivex.schedulers.Schedulers
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import timber.log.Timber
 import javax.inject.Inject
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 //        viewModelFactory = Injection.provideMainViewModelFactory(this)
         injector.inject(this)
 
+
         fab.setOnClickListener { view ->
             viewModel.allCars().subscribe({Log.e(TAG,"all cars size ${it.size}")})
             startAddCarAct()
@@ -61,14 +61,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
+        val adapter = MainlistAdapter()
+        carList.adapter = adapter
         disposable.add(
-            viewModel.carName()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doFinally { Log.e(TAG,"test do finally") }
-                .subscribe({ this.textview1.text = it.carName },
-                    { error -> Log.e(TAG, "unable to get carname", error) })
+            viewModel.allCars
+                .subscribe {adapter.submitList(it)
+                    Timber.d(TAG,"allCars size is ${it.size}")}
         )
     }
 
@@ -89,6 +87,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    override fun onDestroy() {
+        disposable.clear()
+        super.onDestroy()
+    }
     companion object {
         private val TAG = MainActivity::class.java.simpleName
     }

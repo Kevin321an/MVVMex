@@ -61,6 +61,11 @@ dependencies {
     // Kotlin
     implementation deps.kotlin.stdlib
 
+    def paging_version = "2.1.0"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    testImplementation "androidx.paging:paging-common:$paging_version"
+    implementation "androidx.paging:paging-rxjava2:$paging_version"
+
     // Dependencies for local unit tests
     testImplementation deps.junit
     testImplementation deps.mockito.all
@@ -89,6 +94,10 @@ dependencies {
     androidTestImplementation deps.support.annotations
     androidTestImplementation deps.support.app_compat
     androidTestImplementation deps.support.design
+
+
+    implementation deps.support.recyclerview
+    implementation deps.support.cardview
 
 
     def nav_version = "2.1.0"

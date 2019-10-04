@@ -81,6 +81,10 @@ class AddCar : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.clear()
+    }
     companion object {
         private val TAG = MainActivity::class.java.simpleName
     }
